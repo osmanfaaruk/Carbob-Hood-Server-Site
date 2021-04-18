@@ -50,6 +50,8 @@ client.connect(err => {
     })
 
 
+
+
     app.post('/isAdmin', (req, res) => {
         const email = req.body.email;
         serviceCollection.find({email: email})
@@ -111,6 +113,19 @@ client.connect(err => {
         bookCollection.find({email: req.query.email})
         .toArray((err, documents) => {
             res.send(documents)
+        })
+    })
+
+    app.post('/update/:id', (req, res)=>{
+        const id = ObjectID(req.params.id)
+        const data = req.body;
+        bookCollection.findOneAndUpdate({_id:id}, {$set :{status:data.status}})
+        .then(result => {
+            console.log(result)
+            res.send(result);
+        })
+        .catch(err => {
+            console.log(err)
         })
     })
 
